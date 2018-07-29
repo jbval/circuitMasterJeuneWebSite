@@ -1,3 +1,5 @@
+<h2> Les clubs</h2>
+<p>Vous trouverez ici l'ensemble des clubs participants au master ainsi que leur situation géographique respective.</p>
 <style src="./node_modules/ol/ol.css"></style>
 <div id="map" class="map"></div>
 <style>
@@ -6,3 +8,12 @@
     height: 400px;
   }
 </style>
+<ul>
+  <li *ngFor="let club of clubs" class="card" [ngClass]="{'alert alert-success':club.isSelected}">
+   <div class="card-body">
+     <h5 class="card-body-title">{{club.nom}}</h5>
+    <a href="{{club.site}}" class="card-link">Accéder au site</a>
+  </div>
+  </li>
+</ul>
+<div id='popup'></div>
