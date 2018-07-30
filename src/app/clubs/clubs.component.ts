@@ -55,6 +55,12 @@ export class ClubsComponent implements OnInit {
 
     return features;
   }
+  unselectAllClubs(): void {
+    this.clubs.forEach(club => {
+      club.isSelected = false;
+    });
+  }
+
   ngOnInit() {
     const currentComponent: ClubsComponent = this;
     const features = this.buildFeatures();
@@ -73,7 +79,8 @@ export class ClubsComponent implements OnInit {
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
             opacity: 0.95,
-            src: 'assets/tennis-ball.png'
+            src: 'assets/tennis.png'
+            ,
           })
         ),
         stroke: new Stroke({
@@ -130,11 +137,13 @@ export class ClubsComponent implements OnInit {
         const club: Club = feature.get('currentClub');
         const indexClub = currentComponent.clubs.findIndex(c => c.nom === club.nom);
         currentComponent.clubs[indexClub].isSelected = true;
+        currentComponent.unselectAllClubs();
+        currentComponent.clubs[indexClub].isSelected = true;
       } else {
-        currentComponent.clubs.forEach(club => {
-          club.isSelected = false;
-        });
+        currentComponent.unselectAllClubs();
       }
     });
   }
+
+
 }
