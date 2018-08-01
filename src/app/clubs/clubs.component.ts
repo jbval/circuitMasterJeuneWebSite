@@ -26,7 +26,8 @@ export class ClubsComponent implements OnInit {
     this.targetElement = 'map';
     this.clubs = [
       new Club('TC VIENNE', 'http://www.tennisclubvienne.fr', 45.502689, 4.84779),
-      new Club('TC RAMBERTOIS', 'http://www.tennis-saint-rambert.fr', 45.297808, 4.816464),
+
+      new Club('TC RAMBERTOIS', 'http://www.tennis-saint-rambert.fr', 45.299349, 4.819858),
       new Club('TC PONT-EVEQUE', 'http://tcpe.net', 45.531927, 4.925397),
       new Club('TC SAMAURITAIN', 'http://tennisclubsamauritain.com', 45.396481, 4.769996),
       new Club('TC ROUSSILLON', 'http://www.club.fft.fr/tennisclubroussillon', 45.363439, 4.804456),
@@ -39,7 +40,12 @@ export class ClubsComponent implements OnInit {
       ),
       new Club('TC CLONAS-CHAVANAY', 'https://tcclonas.fr', 45.413298, 4.786129),
       new Club('TC ANNONAY', 'http://tennisclubannonay.com', 45.249374, 4.694872),
-      new Club('ALLIANCE TENNIS RHODANIEN', 'http://www.alliancetennisrhodanien.fr', 45.425706, 4.774894)
+      new Club(
+        'ALLIANCE TENNIS RHODANIEN',
+        'http://www.alliancetennisrhodanien.fr',
+        45.425706,
+        4.774894
+      )
     ];
   }
   buildFeatures(): Array<Feature> {
@@ -80,7 +86,6 @@ export class ClubsComponent implements OnInit {
             anchorYUnits: 'pixels',
             opacity: 0.95,
             src: 'assets/tennis.png'
-            ,
           })
         ),
         stroke: new Stroke({
@@ -144,6 +149,4 @@ export class ClubsComponent implements OnInit {
       }
     });
   }
-
-
 }
