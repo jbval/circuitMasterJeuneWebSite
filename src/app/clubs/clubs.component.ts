@@ -149,7 +149,9 @@ export class ClubsComponent implements OnInit {
         }
       }).extend([
         new ZoomToExtent({
-          extent: [4.638715, 45.213284, 5.040402, 45.533327]
+          label: 'C',
+          tipLabel: 'Retour à la vue par défaut',
+          extent: [456299.87141382636, 5651798.037527602, 625990.0742069177, 5712947.660155743]
         })
       ]),
       layers: [
