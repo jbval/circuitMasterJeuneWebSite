@@ -10,10 +10,10 @@
 </style>
 <ul>
   <li *ngFor="let club of clubs" class="card" [ngClass]="{'alert alert-success':club.isSelected}">
-   <div class="card-body">
-     <h5 class="card-body-title">{{club.nom}}</h5>
-    <a href="{{club.site}}" class="card-link" target="_blank">Accéder au site</a>
-  </div>
+    <div class="card-body">
+      <h5 class="card-body-title">{{club.nom}}</h5>
+      <a *ngFor="let clubSite of club.sites" href="{{clubSite.url}}" class="card-link" target="_blank">{{clubSite.siteName}}</a>
+    </div>
   </li>
 </ul>
 <div id='popup'></div>

@@ -5,7 +5,7 @@ import * as geom from 'ol/geom';
 import OSM from 'ol/source/OSM';
 import { fromLonLat } from 'ol/proj';
 import { defaults as defaultControls, ZoomToExtent } from 'ol/control.js';
-import { Club } from './club.model';
+import { Club, ClubSite } from './club.model';
 import Overlay from 'ol/Overlay.js';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
 import { Vector as VectorSource } from 'ol/source.js';
@@ -25,24 +25,67 @@ export class ClubsComponent implements OnInit {
     // this.selectedClub = '';
     this.targetElement = 'map';
     this.clubs = [
-      new Club('TC VIENNE', 'http://www.tennisclubvienne.fr', 45.502689, 4.84779),
+      new Club(
+        'TC VIENNE',
+        [new ClubSite('Accéder au site du club', 'http://www.tennisclubvienne.fr')],
+        45.502689,
+        4.84779
+      ),
 
-      new Club('TC RAMBERTOIS', 'http://www.tennis-saint-rambert.fr', 45.299349, 4.819858),
-      new Club('TC PONT-EVEQUE', 'http://tcpe.net', 45.531927, 4.925397),
-      new Club('TC SAMAURITAIN', 'http://tennisclubsamauritain.com', 45.396481, 4.769996),
-      new Club('TC ROUSSILLON', 'http://www.club.fft.fr/tennisclubroussillon', 45.363439, 4.804456),
-      new Club('TC LA SANNE', 'http://www.club.fft.fr/tc.lasanne/', 45.385333, 4.888573),
+      new Club(
+        'TC RAMBERTOIS',
+        [new ClubSite('Accéder au site du club', 'http://www.tennis-saint-rambert.fr')],
+        45.299349,
+        4.819858
+      ),
+      new Club(
+        'TC PONT-EVEQUE',
+        [new ClubSite('Accéder au site du club', 'http://tcpe.net')],
+        45.531927,
+        4.925397
+      ),
+      new Club(
+        'TC SAMAURITAIN',
+        [new ClubSite('Accéder au site du club', 'http://tennisclubsamauritain.com')],
+        45.396481,
+        4.769996
+      ),
+      new Club(
+        'TC ROUSSILLON',
+        [new ClubSite('Accéder au site du club', 'http://www.club.fft.fr/tennisclubroussillon')],
+        45.363439,
+        4.804456
+      ),
+      new Club(
+        'TC LA SANNE',
+        [new ClubSite('Accéder au site du club', 'http://www.club.fft.fr/tc.lasanne/')],
+        45.385333,
+        4.888573
+      ),
       new Club(
         'TC PEAGE DE ROUSSILLON',
-        'http://www.club.fft.fr/peage.de.roussillon',
+        [new ClubSite('Accéder au site du club', 'http://www.club.fft.fr/peage.de.roussillon')],
         45.367499,
         4.791359
       ),
-      new Club('TC CLONAS-CHAVANAY', 'https://tcclonas.fr', 45.413298, 4.786129),
-      new Club('TC ANNONAY', 'http://tennisclubannonay.com', 45.249374, 4.694872),
+      new Club(
+        'TC CLONAS-CHAVANAY',
+        [
+          new ClubSite('Accéder au site du club de Clonas', 'https://tcclonas.fr'),
+          new ClubSite('Accéder au site du club de Chavanay', 'http://www.club.fft.fr/tc.chavanay ')
+        ],
+        45.413298,
+        4.786129
+      ),
+      new Club(
+        'TC ANNONAY',
+        [new ClubSite('Accéder au site du club', 'http://tennisclubannonay.com')],
+        45.249374,
+        4.694872
+      ),
       new Club(
         'ALLIANCE TENNIS RHODANIEN',
-        'http://www.alliancetennisrhodanien.fr',
+        [new ClubSite('Accéder au site du club', 'http://www.alliancetennisrhodanien.fr')],
         45.425706,
         4.774894
       )
