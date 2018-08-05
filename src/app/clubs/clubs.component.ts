@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Map, View } from 'ol';
-import Feature from 'ol/Feature';
-import * as geom from 'ol/geom';
-import OSM from 'ol/source/OSM';
-import { fromLonLat } from 'ol/proj';
-import { defaults as defaultControls, ZoomToExtent } from 'ol/control.js';
 import { Club, ClubSite } from './club.model';
-import Overlay from 'ol/Overlay.js';
-import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
-import { Vector as VectorSource } from 'ol/source.js';
-import { Fill, Icon, Stroke, Style } from 'ol/style.js';
+import * as leaflet from 'leaflet/dist/leaflet.js';
+// import { Map, View } from 'ol';
+// import Feature from 'ol/Feature';
+// import * as geom from 'ol/geom';
+// import OSM from 'ol/source/OSM';
+// import { fromLonLat } from 'ol/proj';
+// import { defaults as defaultControls, ZoomToExtent } from 'ol/control.js';
+
+// import Overlay from 'ol/Overlay.js';
+// import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
+// import { Vector as VectorSource } from 'ol/source.js';
+// import { Fill, Icon, Stroke, Style } from 'ol/style.js';
 
 @Component({
   selector: 'app-clubs',
@@ -19,10 +21,8 @@ import { Fill, Icon, Stroke, Style } from 'ol/style.js';
 export class ClubsComponent implements OnInit {
   targetElement: string;
   clubs: Array<Club>;
-  // selectedClub: string;
 
   constructor() {
-    // this.selectedClub = '';
     this.targetElement = 'map';
     this.clubs = [
       new Club(
@@ -91,107 +91,46 @@ export class ClubsComponent implements OnInit {
       )
     ];
   }
-  buildFeatures(): Array<Feature> {
-    const features = new Array<Feature>();
-    this.clubs.forEach(club => {
-      const iconFeature = new Feature({
-        geometry: new geom.Point(fromLonLat([club.lon, club.lat])),
-        name: club.nom,
-        currentClub: club
-      });
-      features.push(iconFeature);
-    });
 
-    return features;
-  }
   unselectAllClubs(): void {
     this.clubs.forEach(club => {
       club.isSelected = false;
     });
   }
-
-  ngOnInit() {
-    const currentComponent: ClubsComponent = this;
-    const features = this.buildFeatures();
-    // const iconFeature = new Feature({
-    //   geometry: new geom.Point(fromLonLat([this.clubs[0].lon, this.clubs[0].lat])),
-    //   name: this.clubs[0].nom
-    // });
-    const vectorLayer = new VectorLayer({
-      source: new VectorSource({
-        features: features
-      }),
-      style: new Style({
-        image: new Icon(
-          /** @type {module:ol/style/Icon~Options} */ ({
-            anchor: [0.5, 46],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            opacity: 0.95,
-            src: 'assets/tennis.png'
-          })
-        ),
-        stroke: new Stroke({
-          width: 3,
-          color: [255, 0, 0, 1]
-        }),
-        fill: new Fill({
-          color: [0, 0, 255, 0.6]
+  initMarkers(map: any): void {
+    const ballIcon = leaflet.icon({
+      iconUrl: 'assets/tennis.png',
+      iconAnchor: [16, 37],
+      popupAnchor: [0, -37]
+    });
+    this.clubs.forEach(club => {
+      const marker = leaflet
+        .marker([club.lat, club.lon], {
+          icon: ballIcon
         })
-      })
-    });
-
-    const myMap = new Map({
-      target: this.targetElement,
-      controls: defaultControls({
-        attributionOptions: {
-          collapsible: false
-        }
-      }).extend([
-        new ZoomToExtent({
-          label: 'C',
-          tipLabel: 'Retour à la vue par défaut',
-          extent: [456299.87141382636, 5651798.037527602, 625990.0742069177, 5712947.660155743]
-        })
-      ]),
-      layers: [
-        new TileLayer({
-          source: new OSM()
-        }),
-        vectorLayer
-      ],
-      view: new View({
-        center: fromLonLat([4.861188, 45.385227]),
-        zoom: 10
-      })
-    });
-
-    const element = document.getElementById('popup');
-
-    const popup = new Overlay({
-      element: element,
-      positioning: 'bottom-center',
-      stopEvent: false,
-      offset: [0, -50]
-    });
-    myMap.addOverlay(popup);
-
-    // display popup on click
-    myMap.on('click', function(evt) {
-      const feature = myMap.forEachFeatureAtPixel(evt.pixel, function(foundFeature) {
-        return foundFeature;
+        .addTo(map);
+      let popupTemplate = `
+      <div class="card-body">
+      <h5 class="card-body-title"><i class="fas fa-address-card"></i> ${club.nom}</h5>`;
+      club.sites.forEach(site => {
+        popupTemplate = `${popupTemplate}<a href="${
+          site.url
+        }" class="card-link" target="_blank"><i class="fas fa-link"></i>&nbsp;${
+          site.siteName
+        }</a><br/>`;
       });
-      if (feature) {
-        const coordinates = feature.getGeometry().getCoordinates();
-        popup.setPosition(coordinates);
-        const club: Club = feature.get('currentClub');
-        const indexClub = currentComponent.clubs.findIndex(c => c.nom === club.nom);
-        currentComponent.clubs[indexClub].isSelected = true;
-        currentComponent.unselectAllClubs();
-        currentComponent.clubs[indexClub].isSelected = true;
-      } else {
-        currentComponent.unselectAllClubs();
-      }
+      marker.bindPopup(popupTemplate, {
+        maxWidth: '380'
+      });
+      marker.bindTooltip(club.nom);
     });
+  }
+  initMap(): void {
+    const currentMap = leaflet.map(this.targetElement).setView([45.385227, 4.861188], 10);
+    leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(currentMap);
+    this.initMarkers(currentMap);
+  }
+  ngOnInit() {
+    this.initMap();
   }
 }

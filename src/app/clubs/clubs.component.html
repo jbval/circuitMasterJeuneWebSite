@@ -8,12 +8,3 @@
     height: 400px;
   }
 </style>
-<ul>
-  <li *ngFor="let club of clubs" class="card" [ngClass]="{'alert alert-success':club.isSelected}">
-    <div class="card-body">
-      <h5 class="card-body-title"><i class="fas fa-address-card"></i> {{club.nom}}</h5>
-      <a *ngFor="let clubSite of club.sites" href="{{clubSite.url}}" class="card-link" target="_blank">{{clubSite.siteName}}</a>
-    </div>
-  </li>
-</ul>
-<div id='popup'></div>
